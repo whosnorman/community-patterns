@@ -7,17 +7,44 @@
 ## Workspace Setup
 
 User has already completed Phase 1 (in README.md):
+- ✅ Installed Claude Code
 - ✅ Installed tools (deno, git, gh)
-- ✅ Got API keys (Anthropic at minimum)
 - ✅ Cloned repositories (fork + labs)
 - ✅ Configured Playwright MCP
 - ✅ Restarted Claude Code
 
-Now guide them through creating their workspace.
+Now guide them through getting API keys and creating their workspace.
 
 ---
 
-## Step 1: Create .env File
+## Step 1: Get API Keys
+
+**Guide user to get their API keys.**
+
+**Anthropic API Key** (REQUIRED):
+1. Visit: https://console.anthropic.com/
+2. Navigate to "API Keys" → Create new key
+3. Save it securely - they'll need it in the next step
+4. **This is the only required key to get started**
+
+**Optional keys** (only needed for specific features):
+
+**Jina AI** (for web search in patterns):
+1. Visit: https://jina.ai/
+2. Sign up/login → API Keys → Create key
+3. Save it securely
+
+**Google OAuth** (for Gmail patterns):
+1. Visit: https://console.cloud.google.com/apis/credentials
+2. Create OAuth 2.0 Client ID
+3. Add redirect URI: `http://localhost:8000/api/integrations/google-oauth/callback`
+4. Save Client ID and Client Secret
+
+Tell user: "You can skip the optional keys for now and add them later if needed."
+
+---
+
+## Step 2: Create .env File
 
 Guide user to create `.env` file in `labs/packages/toolshed` with their API keys.
 
@@ -57,7 +84,7 @@ chmod 600 .env
 
 ---
 
-## Step 2: Create Pattern Namespace
+## Step 3: Create Pattern Namespace
 
 Create the user's pattern directory:
 
@@ -89,7 +116,7 @@ git push origin main
 
 ---
 
-## Step 3: Create Identity Key and Workspace Config
+## Step 4: Create Identity Key and Workspace Config
 
 ```bash
 cd ~/Code/community-patterns
@@ -112,7 +139,7 @@ echo "Created workspace for: $GITHUB_USER"
 
 ---
 
-## Step 4: Start Dev Servers
+## Step 5: Start Dev Servers
 
 Check if dev servers are running, start if needed:
 
@@ -135,7 +162,7 @@ echo "Dev servers ready at http://localhost:8000"
 
 ---
 
-## Step 5: Create First Pattern
+## Step 6: Create First Pattern
 
 Walk user through creating a simple counter pattern:
 
@@ -180,7 +207,7 @@ export default pattern<CounterInput, CounterOutput>(
 
 ---
 
-## Step 6: Test Pattern
+## Step 7: Test Pattern
 
 Deploy and test the counter:
 
@@ -206,7 +233,7 @@ Navigate to: http://localhost:8000/test-$GITHUB_USER-1/CHARM-ID
 
 ---
 
-## Step 7: Commit Pattern
+## Step 8: Commit Pattern
 
 ```bash
 cd ~/Code/community-patterns

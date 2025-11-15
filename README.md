@@ -19,7 +19,15 @@ That's it! Claude auto-starts dev servers and guides you.
 
 Complete these steps BEFORE launching Claude Code for the first time. This takes about 30 minutes.
 
-### Step 1: Install Tools
+### Step 1: Install Claude Code
+
+**First, install Claude Code itself:**
+
+- Visit: https://claude.com/code
+- Download and install Claude Code for your platform
+- Launch it once to verify it works
+
+### Step 2: Install Tools
 
 ```bash
 # 1. Install Homebrew (macOS)
@@ -37,24 +45,6 @@ gh --version
 gh auth login
 # Choose: GitHub.com → HTTPS → Yes → Login with browser
 ```
-
-### Step 2: Get API Keys
-
-**Anthropic API Key** (REQUIRED):
-- Visit: https://console.anthropic.com/
-- Navigate to "API Keys" → Create new key
-- Save it securely
-- **This is the only required key to get started**
-
-**Optional keys** (only needed for specific features):
-
-**Jina AI** (for web search in patterns):
-- Visit: https://jina.ai/
-- Sign up/login → API Keys → Create key
-
-**Google OAuth** (for Gmail patterns):
-- Visit: https://console.cloud.google.com/apis/credentials
-- Create OAuth 2.0 Client ID
 
 ### Step 3: Clone Repositories
 
@@ -78,9 +68,9 @@ cd ~/Code
 gh repo clone commontoolsinc/labs
 ```
 
-### Step 4: Install and Configure Playwright MCP (Optional but Recommended)
+### Step 4: Install and Configure Playwright MCP
 
-Playwright enables automated browser testing of your patterns.
+Playwright enables automated browser testing of your patterns. **This is required.**
 
 ```bash
 # Install Playwright MCP
@@ -127,6 +117,7 @@ claude
 ```
 
 Claude will help you:
+- Get your API keys (Anthropic required, others optional)
 - Create `.env` file with your API keys
 - Create your pattern namespace
 - Create identity key
