@@ -537,6 +537,18 @@ git remote add upstream https://github.com/commontoolsinc/community-patterns.git
 2. Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)
 3. Check you're at the right URL
 
+### Playwright Opening Many Tabs
+
+**Symptom**: After closing your laptop and reopening it, Playwright starts opening lots of browser tabs.
+
+**Fix**: Quit the Chrome instance that Playwright opened, then try again:
+
+1. Find the Chrome window opened by Playwright (it usually has a yellow bar saying "Chrome is being controlled by automated test software")
+2. Quit that Chrome instance completely (Cmd+Q on macOS)
+3. Next time Claude uses Playwright, it will open a fresh browser instance and work normally
+
+**Why this happens**: When you suspend/resume your computer, Playwright's connection to Chrome can get confused. Quitting and restarting fixes it.
+
 ---
 
 ## Quick Reference

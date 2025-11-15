@@ -587,6 +587,23 @@ If you see a login/registration page:
 - Provide the URL to test
 - Ask them to report any issues
 
+### Playwright Troubleshooting
+
+**If Playwright starts opening many tabs:**
+
+This can happen after user suspends/resumes their computer. The Chrome connection gets confused.
+
+**Solution:** Ask user to:
+1. Quit the Chrome instance that Playwright opened (the one with "Chrome is being controlled by automated test software" banner)
+2. Next Playwright command will open a fresh browser and work normally
+
+**Tell user:**
+```
+Playwright's browser connection got confused after your computer woke up.
+Please quit the Chrome window with the yellow "automated test software" banner,
+then I'll try again with a fresh browser.
+```
+
 ---
 
 ## Git Workflow
