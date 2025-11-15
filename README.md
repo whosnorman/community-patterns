@@ -33,17 +33,21 @@ Complete these steps BEFORE launching Claude Code for the first time. This takes
 # 1. Install Homebrew (macOS)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# 2. Install required tools
-brew install deno git gh node
+# 2. Check if git is installed (ships with macOS)
+git --version
+# If this prompts to install Command Line Tools, click "Install"
 
-# 3. Verify installations
+# 3. Install required tools
+brew install deno gh node
+
+# 4. Verify installations
 deno --version
 git --version
 gh --version
 node --version
 npm --version
 
-# 4. Authenticate with GitHub
+# 5. Authenticate with GitHub
 gh auth login
 # Choose: GitHub.com → HTTPS → Yes → Login with browser
 ```
