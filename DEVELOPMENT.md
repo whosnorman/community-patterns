@@ -22,14 +22,29 @@ This guide covers normal day-to-day pattern development workflows, best practice
 
 ### Morning Setup
 
-**Terminal 1: Start Dev Server**
+**Option 1: Let Claude Code handle it (recommended)**
 ```bash
-cd ~/Code/labs
+cd ~/Code/community-patterns
+# Launch Claude Code - it will auto-start both dev servers
+```
+
+**Option 2: Manual server startup**
+
+**Terminal 1: Toolshed (backend)**
+```bash
+cd ~/Code/labs/packages/toolshed
 deno task dev
 # Leave this running
 ```
 
-**Terminal 2: Your Workspace**
+**Terminal 2: Shell (frontend)**
+```bash
+cd ~/Code/labs/packages/shell
+deno task dev-local
+# Leave this running
+```
+
+**Terminal 3: Your Workspace**
 ```bash
 cd ~/Code/community-patterns
 # Updates are checked automatically when you launch Claude Code
@@ -418,7 +433,10 @@ const addItem = handler<unknown, { items: Cell<OpaqueRef<Item>[]> }>(
 ### Pattern Won't Deploy
 
 **Check**:
-1. Is dev server running? (`cd ~/Code/labs && deno task dev`)
+1. Are both dev servers running? Check ports 8000 (toolshed) and 5173 (shell)
+   - Claude Code auto-starts them, or manually:
+   - `cd ~/Code/labs/packages/toolshed && deno task dev`
+   - `cd ~/Code/labs/packages/shell && deno task dev-local`
 2. Syntax correct? Run `ct dev --no-run` first
 3. Correct paths? Should be `../community-patterns/patterns/YOUR-USERNAME/...`
 4. Identity key exists? `ls claude.key`

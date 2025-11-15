@@ -167,15 +167,29 @@ chmod 600 .env
 
 ### Test Your Setup
 
+**IMPORTANT: You need to run TWO dev servers:**
+
+**Terminal 1 - Toolshed (backend):**
 ```bash
-cd ~/Code/labs
+cd ~/Code/labs/packages/toolshed
 deno task dev
 
-# You should see: "Server running at http://localhost:8000"
-# Open browser to verify: http://localhost:8000
+# You should see: Server starting on port 8000
 ```
 
-Keep this terminal running - you'll need the server for development.
+**Terminal 2 - Shell (frontend):**
+```bash
+cd ~/Code/labs/packages/shell
+deno task dev-local
+
+# You should see: Server starting on port 5173
+```
+
+**Verify both are running:**
+- Open browser to http://localhost:8000 (should load the shell UI)
+- Both terminals should stay running
+
+**Note:** Claude Code will auto-start these servers for you during sessions, but for manual testing you need both running.
 
 ---
 
@@ -281,17 +295,25 @@ EOF
 
 ### Morning Boot-Up
 
+**Note:** Claude Code will auto-start the dev servers, but if you want to run them manually:
+
 ```bash
-# Terminal 1: Start dev server
-cd ~/Code/labs
+# Terminal 1: Toolshed (backend)
+cd ~/Code/labs/packages/toolshed
 deno task dev
 # Leave running
 
-# Terminal 2: Your workspace
-cd ~/Code/community-patterns
+# Terminal 2: Shell (frontend)
+cd ~/Code/labs/packages/shell
+deno task dev-local
+# Leave running
 
+# Terminal 3: Your workspace
+cd ~/Code/community-patterns
 # Launch Claude Code from here
 ```
+
+**Or just launch Claude Code** - it will start both servers automatically if needed.
 
 ### Development Cycle
 
@@ -549,16 +571,24 @@ cp patterns/examples/todo-list.tsx patterns/YOUR-USERNAME/study-todo.tsx
 ### Server Won't Start
 
 ```bash
-# Check what's using port 8000
+# Check what's using port 8000 (toolshed)
 lsof -i :8000
 
-# Kill it or use different port
-PORT=8001 deno task dev
+# Check what's using port 5173 (shell)
+lsof -i :5173
+
+# Kill conflicting processes
+kill $(lsof -ti:8000)
+kill $(lsof -ti:5173)
+
+# Restart both servers
+cd ~/Code/labs/packages/toolshed && deno task dev &
+cd ~/Code/labs/packages/shell && deno task dev-local &
 ```
 
 ### Pattern Won't Deploy
 
-1. Is dev server running?
+1. Are both dev servers running? (Check ports 8000 and 5173)
 2. Check syntax: `ct dev pattern.tsx --no-run`
 3. Verify identity key exists: `ls claude.key`
 
@@ -589,10 +619,14 @@ git remote add upstream https://github.com/commontoolsinc/community-patterns.git
 ### Daily Commands
 
 ```bash
-# Start dev server (Terminal 1)
-cd ~/Code/labs && deno task dev
+# Start dev servers (Claude Code does this automatically, but if manual:)
+# Terminal 1: Toolshed
+cd ~/Code/labs/packages/toolshed && deno task dev
 
-# Your workspace (Terminal 2)
+# Terminal 2: Shell
+cd ~/Code/labs/packages/shell && deno task dev-local
+
+# Your workspace (Terminal 3 or just let Claude Code handle servers)
 cd ~/Code/community-patterns/patterns/YOUR-USERNAME
 
 # Test syntax

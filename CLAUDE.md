@@ -87,19 +87,23 @@ cd ~/Code/recipes && git fetch origin && git status 2>/dev/null
 **If updates available, update automatically:**
 
 ```bash
-# Stop dev server if running (will handle gracefully if not running)
-pkill -f "deno task dev"
+# Stop both dev servers if running (will handle gracefully if not running)
+pkill -f "packages/toolshed.*deno task dev"
+pkill -f "packages/shell.*deno task dev-local"
 
 # Pull updates
 cd ~/Code/labs && git pull origin main
 
-# Restart dev server in background
-cd ~/Code/labs && deno task dev > /tmp/labs-dev-server.log 2>&1 &
+# Restart both servers in background
+cd ~/Code/labs/packages/toolshed && deno task dev > /tmp/toolshed-dev.log 2>&1 &
+cd ~/Code/labs/packages/shell && deno task dev-local > /tmp/shell-dev.log 2>&1 &
 
-# Give it a moment to start
-sleep 2
+# Give them a moment to start
+sleep 3
 
-echo "Dev server restarted with latest labs updates"
+echo "Both dev servers restarted with latest labs updates"
+echo "Toolshed (backend): http://localhost:8000"
+echo "Shell (frontend): http://localhost:5173"
 ```
 
 **Important Notes:**
@@ -151,40 +155,60 @@ Ready to work! Your workspace: patterns/$GITHUB_USER/
 What would you like to work on today?
 ```
 
-### Step 3: Check and Start Dev Server
+### Step 3: Check and Start Dev Servers
 
-**Check if dev server is running:**
+**IMPORTANT: Two servers must be running:**
+1. **Toolshed** (backend) - Port 8000
+2. **Shell** (frontend) - Port 5173
+
+**Check if both servers are running:**
 
 ```bash
-# Check if dev server is already running
+# Check toolshed (backend on port 8000)
 if lsof -ti:8000 > /dev/null 2>&1; then
-  echo "Dev server is running on port 8000"
+  echo "✓ Toolshed server running on port 8000"
 else
-  echo "Dev server not running - starting now..."
+  echo "✗ Toolshed server not running - will start"
+  NEED_TOOLSHED=1
+fi
+
+# Check shell (frontend on port 5173)
+if lsof -ti:5173 > /dev/null 2>&1; then
+  echo "✓ Shell server running on port 5173"
+else
+  echo "✗ Shell server not running - will start"
+  NEED_SHELL=1
 fi
 ```
 
-**If not running, start it:**
+**Start any missing servers:**
 
 ```bash
-# Start dev server in background
-cd ~/Code/labs && deno task dev > /tmp/labs-dev-server.log 2>&1 &
+# Start toolshed if needed
+if [ "$NEED_TOOLSHED" = "1" ]; then
+  cd ~/Code/labs/packages/toolshed && deno task dev > /tmp/toolshed-dev.log 2>&1 &
+  echo "Started toolshed server (logs: /tmp/toolshed-dev.log)"
+fi
 
-# Give it a moment to start
-sleep 2
+# Start shell if needed
+if [ "$NEED_SHELL" = "1" ]; then
+  cd ~/Code/labs/packages/shell && deno task dev-local > /tmp/shell-dev.log 2>&1 &
+  echo "Started shell server (logs: /tmp/shell-dev.log)"
+fi
 
-# Verify it started
-if lsof -ti:8000 > /dev/null 2>&1; then
-  echo "Dev server started successfully on http://localhost:8000"
-else
-  echo "Failed to start dev server - check /tmp/labs-dev-server.log for errors"
+# Give servers a moment to start
+if [ "$NEED_TOOLSHED" = "1" ] || [ "$NEED_SHELL" = "1" ]; then
+  sleep 3
+  echo "Dev servers started. Access at http://localhost:8000"
 fi
 ```
 
 **Why this matters:**
-- Patterns need the dev server to deploy and test
-- Claude can restart it automatically when needed
-- Runs in background so session can continue
+- Patterns need both servers to deploy and test
+- Toolshed handles pattern deployment and data
+- Shell provides the UI for viewing patterns
+- Claude can restart them automatically when needed
+- Both run in background so session can continue
 
 ---
 
@@ -275,26 +299,34 @@ patterns/alice/
 ✅ **If you accidentally changed something**: `git restore .`
 ✅ **To update labs**: Pull updates and restart dev server automatically
 
-### Managing the Dev Server
+### Managing the Dev Servers
 
-**You can restart the dev server whenever needed:**
+**You can restart both dev servers whenever needed:**
 
 ```bash
-# Stop dev server
-pkill -f "deno task dev"
+# Stop both servers
+pkill -f "packages/toolshed.*deno task dev"
+pkill -f "packages/shell.*deno task dev-local"
 
-# Start dev server
-cd ~/Code/labs && deno task dev > /tmp/labs-dev-server.log 2>&1 &
-sleep 2
+# Start both servers
+cd ~/Code/labs/packages/toolshed && deno task dev > /tmp/toolshed-dev.log 2>&1 &
+cd ~/Code/labs/packages/shell && deno task dev-local > /tmp/shell-dev.log 2>&1 &
+sleep 3
+
+echo "Both servers restarted"
 ```
 
 **When to restart:**
 - After pulling labs updates
 - If patterns aren't deploying correctly
-- If you see connection errors to localhost:8000
+- If you see connection errors to localhost:8000 or localhost:5173
 - User reports something not working
 
-**Dev server runs in background** - session can continue while it starts
+**Both servers run in background** - session can continue while they start
+
+**Check server logs if issues occur:**
+- Toolshed: `/tmp/toolshed-dev.log`
+- Shell: `/tmp/shell-dev.log`
 
 ---
 
