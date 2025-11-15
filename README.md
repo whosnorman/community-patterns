@@ -9,20 +9,13 @@ A community-driven repository for sharing Common Tools patterns. Each developer 
    ```bash
    cd ~/Code
    gh repo clone YOUR-USERNAME/community-patterns
-   cd community-patterns
    ```
-3. **Add upstream** remote:
-   ```bash
-   git remote add upstream https://github.com/commontoolsinc/community-patterns.git
-   ```
-4. **Clone labs** (framework repository):
-   ```bash
-   cd ~/Code
-   gh repo clone commontoolsinc/labs
-   ```
-5. **Launch Claude Code** from the community-patterns directory
+3. **Launch Claude Code** from the `community-patterns` directory
 
-Claude will automatically check for updates and guide you through setup!
+That's it! Claude will:
+- Check for upstream updates
+- Guide you through any additional setup needed (labs repo, .env, upstream remote, etc.)
+- Help you create your first pattern
 
 ## Repository Structure
 

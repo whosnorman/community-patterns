@@ -46,6 +46,34 @@ Checking for updates from upstream...
 [If no updates]: Already up to date with upstream.
 ```
 
+### Step 1.5: Check Reference Repositories (Weekly)
+
+**If it's been a while since last check, remind user to update reference repos:**
+
+```bash
+# Check if labs or recipes need updating
+cd ~/Code/labs && git fetch origin && git status
+cd ~/Code/recipes && git fetch origin && git status 2>/dev/null
+```
+
+**If updates available, guide user:**
+
+```
+It looks like the labs framework has updates available.
+Would you like me to help you update?
+
+This requires:
+1. Stopping the dev server (if running)
+2. Pulling updates: git pull origin main
+3. Restarting the dev server: deno task dev
+```
+
+**Important Notes:**
+- **labs/** updates may include new framework features, bug fixes, or documentation
+- **Dev server must be restarted** after pulling labs updates
+- **recipes/** (if cloned) contains example patterns - optional to update
+- Check approximately weekly, or when user encounters framework issues
+
 ### Step 2: Detect User's Workspace
 
 **Use this procedure to reliably find the user's patterns folder:**
@@ -110,11 +138,23 @@ fi
 **If workspace doesn't exist (First-Time Setup):**
 
 1. Tell user: "Welcome! This appears to be your first session. Let me help you get set up."
-2. Read and follow: **GETTING_STARTED.md**
-3. Create `patterns/$GITHUB_USER/` workspace
-4. Create identity key
-5. Commit and push
-6. Guide through first pattern
+
+2. **Check prerequisites** (in order):
+   - [ ] Is `upstream` remote configured? If not: `git remote add upstream https://github.com/commontoolsinc/community-patterns.git`
+   - [ ] Does `~/Code/labs` exist? If not, guide cloning: `gh repo clone commontoolsinc/labs`
+   - [ ] Does `~/Code/labs/.env` exist? If not, guide creation (see GETTING_STARTED.md for template)
+   - [ ] Is dev server running? Check with user, help start if needed: `cd ~/Code/labs && deno task dev`
+   - [ ] Is Playwright MCP configured? Suggest setup if not (see GETTING_STARTED.md)
+
+3. **Create user's workspace:**
+   - Create `patterns/$GITHUB_USER/` directory
+   - Create identity key: `deno task -c ~/Code/labs/deno.json ct id new > patterns/$GITHUB_USER/claude.key`
+   - Create basic README.md
+   - Commit and push
+
+4. **Guide through first pattern** - Suggest starting with a simple counter or todo list
+
+5. **Reference GETTING_STARTED.md** for detailed setup information if needed
 
 **If workspace exists (Normal Development):**
 
@@ -263,6 +303,56 @@ deno task ct charm setsrc \
 
 ---
 
+## Testing Patterns with Playwright
+
+If Playwright MCP is available, use it to test patterns in a real browser.
+
+### Navigate to Deployed Pattern
+
+```
+Use Playwright to navigate to: http://localhost:8000/my-space/CHARM-ID
+```
+
+### Test Pattern Functionality
+
+Once the page loads:
+1. Take a snapshot to see the UI: `browser_snapshot`
+2. Interact with elements: click buttons, fill inputs, check boxes
+3. Verify behavior: check that counters increment, items are added, etc.
+4. Report any issues found
+
+### Registering (First Time Only)
+
+If you see a login/registration page:
+1. Click "Register" or "Generate Passphrase"
+2. Follow the registration flow
+3. Then navigate back to the pattern URL
+
+### Testing Workflow
+
+**After deploying a new pattern:**
+```
+1. Deploy with ct charm new
+2. Note the charm ID
+3. Use Playwright to test at http://localhost:8000/space/charm-id
+4. Verify all functionality works
+5. Report to user if tests pass or if issues found
+```
+
+**After updating a pattern:**
+```
+1. Update with ct charm setsrc
+2. Use Playwright to verify changes
+3. Test that fixes work and nothing broke
+```
+
+**When Playwright unavailable:**
+- Suggest user test manually in browser
+- Provide the URL to test
+- Ask them to report any issues
+
+---
+
 ## Git Workflow
 
 ### Committing Work
@@ -339,10 +429,13 @@ Covers:
 
 Every session:
 
-- [ ] **Step 1**: Check and pull from upstream
+- [ ] **Step 1**: Check and pull from upstream (this repo)
+- [ ] **Step 1.5**: Check if labs/recipes need updates (weekly)
 - [ ] **Step 2**: Detect user's workspace
 - [ ] **Route**: First-time → GETTING_STARTED.md, Existing → DEVELOPMENT.md
 - [ ] **Confirm**: Working directory is `patterns/$GITHUB_USER/`
+- [ ] **Check**: Is dev server running? Remind to start if needed
+- [ ] **Check**: Is Playwright MCP available for testing?
 - [ ] **Ready**: Ask user what they want to work on
 
 ---

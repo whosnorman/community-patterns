@@ -158,6 +158,55 @@ Keep this terminal running - you'll need the server for development.
 
 ---
 
+## MCP Server Setup (Optional but Recommended)
+
+MCP (Model Context Protocol) servers extend Claude Code's capabilities. The Playwright MCP enables automated browser testing of your patterns.
+
+### Install Playwright MCP Server
+
+```bash
+npm install -g @modelcontextprotocol/server-playwright
+```
+
+### Configure Claude Code for MCP
+
+Create or edit your Claude Code MCP configuration:
+
+**On macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**On Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+**On Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-playwright"
+      ]
+    }
+  }
+}
+```
+
+### Restart Claude Code
+
+After updating the config:
+1. Quit Claude Code completely (Cmd+Q on macOS, Alt+F4 on Windows)
+2. Relaunch Claude Code
+3. You should see a small "🔌" icon indicating MCP servers are connected
+
+**To verify**: Ask Claude Code "Can you use Playwright?" and it should confirm.
+
+**Why use Playwright?**
+- Test your patterns automatically in a real browser
+- Claude can navigate, click, fill forms, and verify behavior
+- Catch bugs before manually testing
+- Document expected behavior
+
+---
+
 ## Your Pattern Workspace
 
 ### Create Your Namespace
