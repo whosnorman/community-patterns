@@ -46,7 +46,7 @@ gh auth login
 # Choose: GitHub.com → HTTPS → Yes → Login with browser
 ```
 
-### Step 3: Clone Repositories
+### Step 3: Clone Your Fork
 
 ```bash
 cd ~/Code
@@ -62,41 +62,15 @@ cd community-patterns
 # 3. Add upstream remote (to get updates)
 git remote add upstream https://github.com/commontoolsinc/community-patterns.git
 git fetch upstream
-
-# 4. Clone labs (framework - READ ONLY)
-cd ~/Code
-gh repo clone commontoolsinc/labs
 ```
 
-### Step 4: Install and Configure Playwright MCP
+### Step 4: Install Playwright MCP
 
 Playwright enables automated browser testing of your patterns. **This is required.**
 
 ```bash
-# Install Playwright MCP
-npm install -g @modelcontextprotocol/server-playwright
-```
-
-**Configure Claude Code** (edit this file manually):
-
-**On macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**On Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-**On Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-Add this configuration:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-playwright"
-      ]
-    }
-  }
-}
+# Install Playwright MCP using the Claude CLI
+claude mcp add playwright npx '@playwright/mcp@latest'
 ```
 
 ### Step 5: Restart Claude Code

@@ -9,15 +9,33 @@
 User has already completed Phase 1 (in README.md):
 - ✅ Installed Claude Code
 - ✅ Installed tools (deno, git, gh)
-- ✅ Cloned repositories (fork + labs)
+- ✅ Cloned their fork of community-patterns
 - ✅ Configured Playwright MCP
 - ✅ Restarted Claude Code
 
-Now guide them through getting API keys and creating their workspace.
+Now guide them through cloning dependencies, getting API keys, and creating their workspace.
 
 ---
 
-## Step 1: Get API Keys
+## Step 1: Clone Required Repositories
+
+Clone the labs repository (required) and recipes repository (optional, if accessible).
+
+```bash
+cd ~/Code
+
+# Clone labs (framework - REQUIRED, READ ONLY)
+gh repo clone commontoolsinc/labs
+
+# Try to clone recipes (optional - don't worry if this fails)
+gh repo clone commontoolsinc/recipes 2>/dev/null || echo "Note: recipes repo not accessible (this is fine)"
+```
+
+**Tell the user:** "I've cloned the Common Tools framework repository (labs). The recipes repository is optional and may not be accessible depending on your permissions."
+
+---
+
+## Step 2: Get API Keys
 
 **Guide user to get their API keys.**
 
@@ -44,7 +62,7 @@ Tell user: "You can skip the optional keys for now and add them later if needed.
 
 ---
 
-## Step 2: Create .env File
+## Step 3: Create .env File
 
 Guide user to create `.env` file in `labs/packages/toolshed` with their API keys.
 
@@ -84,7 +102,7 @@ chmod 600 .env
 
 ---
 
-## Step 3: Create Pattern Namespace
+## Step 4: Create Pattern Namespace
 
 Create the user's pattern directory:
 
@@ -116,7 +134,7 @@ git push origin main
 
 ---
 
-## Step 4: Create Identity Key and Workspace Config
+## Step 5: Create Identity Key and Workspace Config
 
 ```bash
 cd ~/Code/community-patterns
@@ -139,7 +157,7 @@ echo "Created workspace for: $GITHUB_USER"
 
 ---
 
-## Step 5: Start Dev Servers
+## Step 6: Start Dev Servers
 
 Check if dev servers are running, start if needed:
 
@@ -162,7 +180,7 @@ echo "Dev servers ready at http://localhost:8000"
 
 ---
 
-## Step 6: Create First Pattern
+## Step 7: Create First Pattern
 
 Walk user through creating a simple counter pattern:
 
@@ -207,7 +225,7 @@ export default pattern<CounterInput, CounterOutput>(
 
 ---
 
-## Step 7: Test Pattern
+## Step 8: Test Pattern
 
 Deploy and test the counter:
 
@@ -233,7 +251,7 @@ Navigate to: http://localhost:8000/test-$GITHUB_USER-1/CHARM-ID
 
 ---
 
-## Step 8: Commit Pattern
+## Step 9: Commit Pattern
 
 ```bash
 cd ~/Code/community-patterns
