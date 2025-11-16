@@ -36,6 +36,8 @@ interface SpinnerInput {
   showPayouts: Cell<Default<boolean, false>>;
   // History of all spins (timestamp, generosity level, result)
   spinHistory: Cell<Default<SpinRecord[], []>>;
+  // Show sparkle burst animation
+  showSparkles: Cell<Default<boolean, false>>;
 }
 
 interface SpinnerOutput {
@@ -46,6 +48,7 @@ interface SpinnerOutput {
   spinCount: Cell<Default<number, 0>>;
   showPayouts: Cell<Default<boolean, false>>;
   spinHistory: Cell<Default<SpinRecord[], []>>;
+  showSparkles: Cell<Default<boolean, false>>;
 }
 
 const spin = handler<
@@ -57,9 +60,10 @@ const spin = handler<
     spinSequence: Cell<string[]>;
     spinCount: Cell<number>;
     spinHistory: Cell<SpinRecord[]>;
+    showSparkles: Cell<boolean>;
   }
 >(
-  (_, { currentEmoji, isSpinning, generosity, spinSequence, spinCount, spinHistory }) => {
+  (_, { currentEmoji, isSpinning, generosity, spinSequence, spinCount, spinHistory, showSparkles }) => {
     // Convert generosity (0-10) to weights
     // At 0: mostly hugs (99%), At 10: mostly candy (99%)
     const gen = generosity.get();
@@ -121,6 +125,13 @@ const spin = handler<
       result: finalEmoji,
     };
     spinHistory.set([...history, newRecord]);
+
+    // Trigger sparkle burst after animation completes (6 seconds)
+    setTimeout(() => {
+      showSparkles.set(true);
+      // Hide sparkles after animation completes (2 seconds)
+      setTimeout(() => showSparkles.set(false), 2000);
+    }, 6000);
   }
 );
 
@@ -163,7 +174,7 @@ const closePayouts = handler<
 
 export default recipe<SpinnerInput, SpinnerOutput>(
   "Reward Spinner",
-  ({ currentEmoji, isSpinning, generosity, spinSequence, spinCount, showPayouts, spinHistory }) => {
+  ({ currentEmoji, isSpinning, generosity, spinSequence, spinCount, showPayouts, spinHistory, showSparkles }) => {
     // Compute the TADA emoji display from generosity level (0-10 emojis, one per level)
     const tadaDisplay = computed(() =>
       "🎉".repeat(generosity.get())
@@ -427,6 +438,41 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             )}
           </div>
 
+          {/* Sparkle Burst */}
+          {showSparkles ? (
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                width: "0",
+                height: "0",
+                pointerEvents: "none",
+                zIndex: 1000,
+              }}
+            >
+              {Array.from({ length: 20 }, (_, i) => {
+                const angle = (i / 20) * 360;
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      left: "0",
+                      top: "0",
+                      fontSize: "40px",
+                      animation: `sparkleBurst 2s ease-out forwards`,
+                      animationDelay: `${i * 0.02}s`,
+                      transform: `rotate(${angle}deg)`,
+                    }}
+                  >
+                    ✨
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+
           {/* CSS Animations */}
           <style>{`
             @keyframes slotSpin1 {
@@ -455,6 +501,19 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                 opacity: 1;
               }
             }
+            @keyframes sparkleBurst {
+              0% {
+                transform: translate(0, 0) rotate(0deg) scale(0);
+                opacity: 1;
+              }
+              50% {
+                opacity: 1;
+              }
+              100% {
+                transform: translate(0, -300px) rotate(720deg) scale(1.5);
+                opacity: 0;
+              }
+            }
           `}</style>
 
           {/* Spin Button */}
@@ -466,6 +525,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
               spinSequence,
               spinCount,
               spinHistory,
+              showSparkles,
             })}
             style={{
               fontSize: "32px",
@@ -617,6 +677,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
       spinCount,
       showPayouts,
       spinHistory,
+      showSparkles,
     };
   }
 );
