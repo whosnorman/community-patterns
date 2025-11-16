@@ -183,7 +183,46 @@ echo "Dev servers ready at http://localhost:8000"
 
 ---
 
-## Step 7: Create First Pattern
+## Step 7: Register User and Save Passphrase
+
+Open the test space in Playwright to register the user.
+
+**Tell the user:** "I'm going to open a browser so you can register. You'll need to click 'Register', then 'Generate Passphrase', and paste it back to me so I can save it for future use."
+
+```bash
+# Open browser with Playwright MCP
+# Use playwright mcp to navigate to http://localhost:8000
+```
+
+**Wait for user to:**
+1. Click "Register" button in the browser
+2. Click "Generate Passphrase" button
+3. Copy the passphrase
+
+**Ask user:** "Please paste the passphrase you generated:"
+
+**After receiving passphrase, save it:**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+
+# Save passphrase to file (will be gitignored)
+cat > .passphrase << EOF
+# Common Tools User Passphrase
+# Keep this safe - you'll need it to access your spaces
+# Generated: $(date)
+
+PASSPHRASE_GOES_HERE
+EOF
+
+chmod 600 .passphrase
+
+echo "Passphrase saved to .passphrase (this file is gitignored)"
+```
+
+---
+
+## Step 8: Create First Pattern
 
 Walk user through creating a simple counter pattern:
 
@@ -228,7 +267,7 @@ export default pattern<CounterInput, CounterOutput>(
 
 ---
 
-## Step 8: Test Pattern
+## Step 9: Test Pattern
 
 Deploy and test the counter:
 
@@ -258,7 +297,7 @@ Navigate to: http://localhost:8000/test-$GITHUB_USER-1/CHARM-ID
 
 ---
 
-## Step 9: Commit Pattern
+## Step 10: Commit Pattern
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"

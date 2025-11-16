@@ -1,10 +1,11 @@
 # Workspace config (never commit!)
 .claude-workspace
 
-# Identity keys (never commit!)
+# Identity keys and passphrases (never commit!)
 *.key
 claude.key
 **/claude.key
+.passphrase
 
 # Node modules and Deno
 node_modules/
