@@ -19,10 +19,11 @@ Now guide them through cloning dependencies, getting API keys, and creating thei
 
 ## Step 1: Clone Required Repositories
 
-Clone the labs repository (required) and recipes repository (optional, if accessible).
+Clone the labs repository (required) and recipes repository (optional, if accessible) as peers to community-patterns.
 
 ```bash
-cd ~/Code
+# Go to parent directory of community-patterns (clone as peers)
+cd "$(git rev-parse --show-toplevel)/.."
 
 # Clone labs (framework - REQUIRED, READ ONLY)
 gh repo clone commontoolsinc/labs
@@ -31,7 +32,7 @@ gh repo clone commontoolsinc/labs
 gh repo clone commontoolsinc/recipes 2>/dev/null || echo "Note: recipes repo not accessible (this is fine)"
 ```
 
-**Tell the user:** "I've cloned the Common Tools framework repository (labs). The recipes repository is optional and may not be accessible depending on your permissions."
+**Tell the user:** "I've cloned the Common Tools framework repository (labs) as a peer to your community-patterns directory. The recipes repository is optional and may not be accessible depending on your permissions."
 
 ---
 
@@ -67,7 +68,7 @@ Tell user: "You can skip the optional keys for now and add them later if needed.
 Guide user to create `.env` file in `labs/packages/toolshed` with their API keys.
 
 ```bash
-cd ~/Code/labs/packages/toolshed
+cd "$(git rev-parse --show-toplevel)/../labs/packages/toolshed"
 
 cat > .env << 'EOF'
 ENV=development
@@ -107,7 +108,7 @@ chmod 600 .env
 Create the user's pattern directory:
 
 ```bash
-cd ~/Code/community-patterns
+cd "$(git rev-parse --show-toplevel)"
 
 # Get username from git origin
 GITHUB_USER=$(git remote get-url origin | sed -E 's/.*[:/]([^/]+)\/community-patterns.*/\1/')
@@ -137,10 +138,10 @@ git push origin main
 ## Step 5: Create Identity Key and Workspace Config
 
 ```bash
-cd ~/Code/community-patterns
+cd "$(git rev-parse --show-toplevel)"
 
 # Create identity key (at repo root)
-deno task -c ~/Code/labs/deno.json ct id new > claude.key
+deno task -c "../labs/deno.json" ct id new > claude.key
 chmod 600 claude.key
 
 # Get username
@@ -162,15 +163,18 @@ echo "Created workspace for: $GITHUB_USER"
 Check if dev servers are running, start if needed:
 
 ```bash
+# Get labs directory path (peer to community-patterns)
+LABS_DIR="$(git rev-parse --show-toplevel)/../labs"
+
 # Check toolshed (port 8000)
 if ! lsof -ti:8000 > /dev/null 2>&1; then
-  cd ~/Code/labs/packages/toolshed && deno task dev > /tmp/toolshed-dev.log 2>&1 &
+  cd "$LABS_DIR/packages/toolshed" && deno task dev > /tmp/toolshed-dev.log 2>&1 &
   echo "Started toolshed server"
 fi
 
 # Check shell (port 5173)
 if ! lsof -ti:5173 > /dev/null 2>&1; then
-  cd ~/Code/labs/packages/shell && deno task dev-local > /tmp/shell-dev.log 2>&1 &
+  cd "$LABS_DIR/packages/shell" && deno task dev-local > /tmp/shell-dev.log 2>&1 &
   echo "Started shell server"
 fi
 
@@ -185,7 +189,7 @@ echo "Dev servers ready at http://localhost:8000"
 Walk user through creating a simple counter pattern:
 
 ```bash
-cd ~/Code/community-patterns/patterns/$GITHUB_USER
+cd "$(git rev-parse --show-toplevel)/patterns/$GITHUB_USER"
 ```
 
 Create `counter.tsx`:
@@ -230,16 +234,20 @@ export default pattern<CounterInput, CounterOutput>(
 Deploy and test the counter:
 
 ```bash
+# Get paths relative to community-patterns
+COMMUNITY_PATTERNS_DIR="$(git rev-parse --show-toplevel)"
+LABS_DIR="$COMMUNITY_PATTERNS_DIR/../labs"
+
 # Test syntax
-cd ~/Code/labs
-deno task ct dev ../community-patterns/patterns/$GITHUB_USER/counter.tsx --no-run
+cd "$LABS_DIR"
+deno task ct dev "$COMMUNITY_PATTERNS_DIR/patterns/$GITHUB_USER/counter.tsx" --no-run
 
 # Deploy (if syntax check passes)
 deno task ct charm new \
   --api-url http://localhost:8000 \
-  --identity ../community-patterns/claude.key \
+  --identity "$COMMUNITY_PATTERNS_DIR/claude.key" \
   --space test-$GITHUB_USER-1 \
-  ../community-patterns/patterns/$GITHUB_USER/counter.tsx
+  "$COMMUNITY_PATTERNS_DIR/patterns/$GITHUB_USER/counter.tsx"
 
 # Note the charm ID from output
 ```
@@ -254,7 +262,7 @@ Navigate to: http://localhost:8000/test-$GITHUB_USER-1/CHARM-ID
 ## Step 9: Commit Pattern
 
 ```bash
-cd ~/Code/community-patterns
+cd "$(git rev-parse --show-toplevel)"
 git add patterns/$GITHUB_USER/counter.tsx
 git commit -m "Add counter pattern"
 git push origin main
@@ -277,8 +285,8 @@ User is now ready to build patterns. Remind them:
 For future sessions, user just needs to:
 
 ```bash
-cd ~/Code/community-patterns
-# Launch Claude Code here
+cd /path/to/community-patterns  # Wherever they cloned it
+claude
 ```
 
 Claude will:

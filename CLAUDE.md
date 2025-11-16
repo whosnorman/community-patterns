@@ -1,8 +1,29 @@
 # Instructions for Claude Code Sessions
 
+## Verify Launch Directory
+
+**CRITICAL: Check this FIRST on every session:**
+
+```bash
+# Verify we're in the community-patterns repository root
+git remote get-url origin 2>/dev/null | grep -q "community-patterns"
+```
+
+**If this fails:**
+- User launched Claude from the WRONG directory
+- **STOP IMMEDIATELY and tell the user:**
+  - "Please quit Claude and relaunch it from your community-patterns directory"
+  - "You can find it wherever you cloned it (e.g., `cd ~/Code/community-patterns` or `cd ~/Code/common-tools/community-patterns`)"
+  - "Then run `claude` from there"
+
+**If this succeeds:**
+- Continue with setup checks below
+
+---
+
 ## First-Time Setup Check
 
-**CRITICAL: Check this FIRST before anything else:**
+**Check if this is first-time setup:**
 
 ```bash
 # Quick check: Does workspace config exist?

@@ -128,6 +128,8 @@ cd ~/Code/community-patterns  # Or wherever your Code repo is
 claude
 ```
 
+**When Claude launches, say:** "Help me get started"
+
 Claude will help you:
 - Get your API keys (Anthropic required, others optional)
 - Create `.env` file with your API keys
