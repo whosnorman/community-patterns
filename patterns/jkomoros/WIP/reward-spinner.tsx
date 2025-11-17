@@ -224,19 +224,18 @@ export default recipe<SpinnerInput, SpinnerOutput>(
     return {
       [NAME]: str`Reward Spinner`,
       [UI]: (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "100vh",
-            backgroundColor: "white",
-            fontFamily: "system-ui, sans-serif",
-            padding: "20px",
-            gap: "40px",
-          }}
-        >
+        <ct-screen style="background-color: white; font-family: system-ui, sans-serif;">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+              padding: "20px",
+              gap: "40px",
+            }}
+          >
           {/* Wrapper for emoji and sparkles */}
           <div style={{ position: "relative" }}>
             {/* Slot Machine Display */}
@@ -746,6 +745,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             </div>
           </div>
         </div>
+        </ct-screen>
       ),
       currentEmoji,
       isSpinning,
