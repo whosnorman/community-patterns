@@ -240,16 +240,15 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                 spinHistory,
               })}
               style={{
-                width: "min(300px, 90vw)",
+                width: "300px",
                 height: "200px",
                 overflow: "hidden",
-                position: "relative",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)",
                 cursor: "pointer",
-                transform: "scale(4.0)",
+                transform: "scale(clamp(0.95, calc(0.7 + 0.00078125 * 100vw), 2.2))",
               }}
             >
             {spinSequence.get().length > 0 ? (
