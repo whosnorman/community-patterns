@@ -213,6 +213,14 @@ export default recipe<SpinnerInput, SpinnerOutput>(
         >
           {/* Slot Machine Display */}
           <div
+            onClick={spin({
+              currentEmoji,
+              isSpinning,
+              generosity,
+              spinSequence,
+              spinCount,
+              spinHistory,
+            })}
             style={{
               width: "min(300px, 90vw)",
               height: "200px",
@@ -222,6 +230,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
               alignItems: "center",
               justifyContent: "center",
               maskImage: "linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)",
+              cursor: "pointer",
             }}
           >
             {spinSequence.get().length > 0 ? (
