@@ -48,6 +48,27 @@ interface SpinnerOutput {
   spinHistory: Cell<Default<SpinRecord[], []>>;
 }
 
+/**
+ * Calculate prize weights based on generosity level
+ * @param generosity - Level from 0 to 10 (0 = lots of candy, 10 = mostly hugs)
+ * @returns Array of [weightThreeBeans, weightOneBean, hugWeight]
+ */
+function calculatePrizeWeights(generosity: number): [number, number, number] {
+  // Use linear curve for smooth transition
+  // At gen=0: hugWeight=1, candyWeight=21 → 5% hugs, 95% candy
+  // At gen=5: hugWeight=11, candyWeight=11 → 50% hugs, 50% candy
+  // At gen=10: hugWeight=21, candyWeight=1 → 95% hugs, 5% candy
+  const hugWeight = 1 + (generosity * 2.0); // 1.0 to 21.0
+  const candyWeight = 1 + ((10 - generosity) * 2.0); // 21.0 to 1.0
+
+  // Split candy between 3 beans and 1 bean
+  // Three beans is rare: only 15% of candy payouts
+  const weightThreeBeans = candyWeight * 0.15;
+  const weightOneBean = candyWeight * 0.85;
+
+  return [weightThreeBeans, weightOneBean, hugWeight];
+}
+
 const spin = handler<
   unknown,
   {
@@ -60,23 +81,8 @@ const spin = handler<
   }
 >(
   (_, { currentEmoji, isSpinning, generosity, spinSequence, spinCount, spinHistory }) => {
-    // Convert generosity (0-10) to weights
-    // Smooth curve from 95% candy at 0 to 95% hugs at 10
     const gen = generosity.get();
-
-    // Use linear curve for smooth transition
-    // At gen=0: hugWeight=1, candyWeight=21 → 5% hugs, 95% candy
-    // At gen=5: hugWeight=11, candyWeight=11 → 50% hugs, 50% candy
-    // At gen=10: hugWeight=21, candyWeight=1 → 95% hugs, 5% candy
-    const hugWeight = 1 + (gen * 2.0); // 1.0 to 21.0
-    const candyWeight = 1 + ((10 - gen) * 2.0); // 21.0 to 1.0
-
-    // Split candy between 3 beans and 1 bean
-    // Three beans is rare: only 15% of candy payouts
-    const weightThreeBeans = candyWeight * 0.15;
-    const weightOneBean = candyWeight * 0.85;
-
-    const weights = [weightThreeBeans, weightOneBean, hugWeight];
+    const weights = calculatePrizeWeights(gen);
 
     // Calculate total weight
     const totalWeight = weights.reduce((sum, w) => sum + w, 0);
@@ -195,12 +201,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
     // Calculate payout percentages and convert to emoji dots (poor man's progress bars)
     const payoutDots = computed(() => {
       const gen = generosity.get();
-
-      // Same smooth curve as spin handler
-      const hugWeight = 1 + (gen * 2.0); // 1.0 to 21.0
-      const candyWeight = 1 + ((10 - gen) * 2.0); // 21.0 to 1.0
-      const weightThreeBeans = candyWeight * 0.15;
-      const weightOneBean = candyWeight * 0.85;
+      const [weightThreeBeans, weightOneBean, hugWeight] = calculatePrizeWeights(gen);
       const totalWeight = weightThreeBeans + weightOneBean + hugWeight;
 
       const threeBeansPct = Math.round((weightThreeBeans / totalWeight) * 100);
