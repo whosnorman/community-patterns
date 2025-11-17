@@ -697,7 +697,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                       fontSize: "10px",
                     }}
                   >
-                    <span style={{ fontSize: "14px" }}>{prize.emoji}</span>
+                    <span style={{ fontSize: "14px", minWidth: "42px", textAlign: "right" }}>{prize.emoji}</span>
                     <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{ prize.dots}</span>
                     <span style={{ fontSize: "9px", minWidth: "30px" }}>
                       {prize.percent}%
