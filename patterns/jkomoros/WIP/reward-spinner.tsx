@@ -441,26 +441,26 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                 zIndex: 1000,
               }}
             >
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst0 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst1 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst2 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst3 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst4 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst5 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst6 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst7 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst8 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst9 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst10 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst11 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst12 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst13 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst14 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst15 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst16 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst17 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst18 2s ease-out 6s" }}>⭐</div>
-              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst19 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst0 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst1 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst2 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst3 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst4 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst5 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst6 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst7 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst8 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst9 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst10 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst11 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst12 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst13 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst14 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst15 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst16 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst17 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst18 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", opacity: 0, animation: "sparkleBurst19 2s ease-out 6s" }}>⭐</div>
             </div>
           )}
 
