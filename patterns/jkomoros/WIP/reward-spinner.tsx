@@ -61,10 +61,15 @@ const spin = handler<
 >(
   (_, { currentEmoji, isSpinning, generosity, spinSequence, spinCount, spinHistory }) => {
     // Convert generosity (0-10) to weights
-    // At 0: lots of candy, At 10: mostly hugs
+    // Smooth curve from ~90% candy at 0 to ~90% hugs at 10
     const gen = generosity.get();
-    const hugWeight = 1 + (gen * 10); // 1 to 101 (high gen = lots of hugs)
-    const candyWeight = 11 - gen; // 11 to 1 (high gen = few candy)
+
+    // Use exponential curve for smooth transition
+    // At gen=0: hugWeight=1, candyWeight=10 → ~9% hugs
+    // At gen=5: hugWeight=5, candyWeight=5 → ~50% hugs
+    // At gen=10: hugWeight=10, candyWeight=1 → ~91% hugs
+    const hugWeight = 1 + (gen * 0.9); // 1.0 to 10.0
+    const candyWeight = 1 + ((10 - gen) * 0.9); // 10.0 to 1.0
 
     // Split candy between 3 beans and 1 bean
     const weightThreeBeans = candyWeight * 0.45;
@@ -189,8 +194,10 @@ export default recipe<SpinnerInput, SpinnerOutput>(
     // Calculate payout percentages and convert to emoji dots (poor man's progress bars)
     const payoutDots = computed(() => {
       const gen = generosity.get();
-      const hugWeight = 1 + (gen * 10);
-      const candyWeight = 11 - gen;
+
+      // Same smooth curve as spin handler
+      const hugWeight = 1 + (gen * 0.9); // 1.0 to 10.0
+      const candyWeight = 1 + ((10 - gen) * 0.9); // 10.0 to 1.0
       const weightThreeBeans = candyWeight * 0.45;
       const weightOneBean = candyWeight * 0.55;
       const totalWeight = weightThreeBeans + weightOneBean + hugWeight;
@@ -690,7 +697,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                     }}
                   >
                     <span style={{ fontSize: "14px" }}>{prize.emoji}</span>
-                    <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{prize.dots}</span>
+                    <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{ prize.dots}</span>
                     <span style={{ fontSize: "9px", minWidth: "30px" }}>
                       {prize.percent}%
                     </span>
