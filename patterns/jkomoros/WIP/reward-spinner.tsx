@@ -26,8 +26,8 @@ interface SpinRecord {
 interface SpinnerInput {
   currentEmoji: Cell<Default<string, "🎁">>;
   isSpinning: Cell<Default<boolean, false>>;
-  // Generosity level: 0 = lots of candy (5% hugs), 10 = mostly hugs (99%)
-  generosity: Cell<Default<number, 0>>;
+  // Generosity level: 0 = mostly hugs (95%), 10 = lots of candy (95%)
+  generosity: Cell<Default<number, 10>>;
   // Sequence of emojis for slot machine animation
   spinSequence: Cell<Default<string[], []>>;
   // Counter to force animation restart
@@ -41,7 +41,7 @@ interface SpinnerInput {
 interface SpinnerOutput {
   currentEmoji: Cell<Default<string, "🎁">>;
   isSpinning: Cell<Default<boolean, false>>;
-  generosity: Cell<Default<number, 0>>;
+  generosity: Cell<Default<number, 10>>;
   spinSequence: Cell<Default<string[], []>>;
   spinCount: Cell<Default<number, 0>>;
   payoutAnimationCount: Cell<Default<number, 0>>;
@@ -50,16 +50,16 @@ interface SpinnerOutput {
 
 /**
  * Calculate prize weights based on generosity level
- * @param generosity - Level from 0 to 10 (0 = lots of candy, 10 = mostly hugs)
+ * @param generosity - Level from 0 to 10 (0 = mostly hugs, 10 = lots of candy)
  * @returns Array of [weightThreeBeans, weightOneBean, hugWeight]
  */
 function calculatePrizeWeights(generosity: number): [number, number, number] {
   // Use linear curve for smooth transition
-  // At gen=0: hugWeight=1, candyWeight=21 → 5% hugs, 95% candy
+  // At gen=0: hugWeight=21, candyWeight=1 → 95% hugs, 5% candy
   // At gen=5: hugWeight=11, candyWeight=11 → 50% hugs, 50% candy
-  // At gen=10: hugWeight=21, candyWeight=1 → 95% hugs, 5% candy
-  const hugWeight = 1 + (generosity * 2.0); // 1.0 to 21.0
-  const candyWeight = 1 + ((10 - generosity) * 2.0); // 21.0 to 1.0
+  // At gen=10: hugWeight=1, candyWeight=21 → 5% hugs, 95% candy
+  const hugWeight = 1 + ((10 - generosity) * 2.0); // 21.0 to 1.0
+  const candyWeight = 1 + (generosity * 2.0); // 1.0 to 21.0
 
   // Split candy between 3 beans and 1 bean
   // Three beans is rare: only 15% of candy payouts
