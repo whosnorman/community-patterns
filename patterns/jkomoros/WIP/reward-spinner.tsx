@@ -427,40 +427,42 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             )}
           </div>
 
-          {/* Sparkle Burst - always in DOM, animates on spinCount change */}
-          <div
-            key={spinCount}
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              width: "0",
-              height: "0",
-              pointerEvents: "none",
-              zIndex: 1000,
-            }}
-          >
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst0 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst1 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst2 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst3 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst4 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst5 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst6 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst7 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst8 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst9 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst10 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst11 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst12 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst13 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst14 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst15 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst16 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst17 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst18 2s ease-out" }}>⭐</div>
-            <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst19 2s ease-out" }}>⭐</div>
-          </div>
+          {/* Sparkle Burst - only show after first spin */}
+          {spinCount.get() > 0 && (
+            <div
+              key={spinCount}
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                width: "0",
+                height: "0",
+                pointerEvents: "none",
+                zIndex: 1000,
+              }}
+            >
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst0 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst1 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst2 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst3 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst4 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst5 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst6 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst7 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst8 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst9 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst10 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst11 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst12 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst13 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst14 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst15 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst16 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst17 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst18 2s ease-out 6s" }}>⭐</div>
+              <div style={{ position: "absolute", left: "0", top: "0", fontSize: "40px", animation: "sparkleBurst19 2s ease-out 6s" }}>⭐</div>
+            </div>
+          )}
 
           {/* CSS Animations */}
           <style>{`
@@ -486,7 +488,6 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             @keyframes sparkleBurst18 { 0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; } 1% { opacity: 1; } 50% { opacity: 1; } 100% { transform: translate(300px, 15px) rotate(700deg) scale(1.4); opacity: 0; } }
             @keyframes sparkleBurst19 { 0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; } 1% { opacity: 1; } 50% { opacity: 1; } 100% { transform: translate(290px, 100px) rotate(790deg) scale(1.7); opacity: 0; } }
 
-            @keyframes slotSpin1 {
             @keyframes slotSpin1 {
               0% {
                 transform: translateY(0);
