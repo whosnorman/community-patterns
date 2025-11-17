@@ -32,6 +32,8 @@ interface SpinnerInput {
   spinSequence: Cell<Default<string[], []>>;
   // Counter to force animation restart
   spinCount: Cell<Default<number, 0>>;
+  // Counter to force payout animation restart
+  payoutAnimationCount: Cell<Default<number, 0>>;
   // History of all spins (timestamp, generosity level, result)
   spinHistory: Cell<Default<SpinRecord[], []>>;
 }
@@ -42,6 +44,7 @@ interface SpinnerOutput {
   generosity: Cell<Default<number, 0>>;
   spinSequence: Cell<Default<string[], []>>;
   spinCount: Cell<Default<number, 0>>;
+  payoutAnimationCount: Cell<Default<number, 0>>;
   spinHistory: Cell<Default<SpinRecord[], []>>;
 }
 
@@ -145,31 +148,33 @@ const spin = handler<
 
 const decrementGenerosity = handler<
   unknown,
-  { generosity: Cell<number> }
+  { generosity: Cell<number>; payoutAnimationCount: Cell<number> }
 >(
-  (_, { generosity }) => {
+  (_, { generosity, payoutAnimationCount }) => {
     const current = generosity.get();
     if (current > 0) {
       generosity.set(current - 1);
+      payoutAnimationCount.set(payoutAnimationCount.get() + 1);
     }
   }
 );
 
 const incrementGenerosity = handler<
   unknown,
-  { generosity: Cell<number> }
+  { generosity: Cell<number>; payoutAnimationCount: Cell<number> }
 >(
-  (_, { generosity }) => {
+  (_, { generosity, payoutAnimationCount }) => {
     const current = generosity.get();
     if (current < 10) {
       generosity.set(current + 1);
+      payoutAnimationCount.set(payoutAnimationCount.get() + 1);
     }
   }
 );
 
 export default recipe<SpinnerInput, SpinnerOutput>(
   "Reward Spinner",
-  ({ currentEmoji, isSpinning, generosity, spinSequence, spinCount, spinHistory }) => {
+  ({ currentEmoji, isSpinning, generosity, spinSequence, spinCount, payoutAnimationCount, spinHistory }) => {
     // Compute the TADA emoji display from generosity level (0-10 emojis, one per level)
     const tadaDisplay = computed(() =>
       "🎉".repeat(generosity.get())
@@ -586,10 +591,6 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             }
             @keyframes payoutFade {
               0% {
-                transform: translateY(20px);
-                opacity: 0;
-              }
-              10% {
                 transform: translateY(0);
                 opacity: 1;
               }
@@ -643,34 +644,63 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             }}
           >
             {/* Payout visualization - auto-fades after 3s */}
-            <div
-              key={generosity.get()}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "3px",
-                marginBottom: "6px",
-                animation: "payoutFade 3.5s ease-out forwards",
-              }}
-            >
-              {payoutDots.map((prize, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    fontSize: "10px",
-                  }}
-                >
-                  <span style={{ fontSize: "14px", minWidth: "42px", textAlign: "right" }}>{prize.emoji}</span>
-                  <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{ prize.dots}</span>
-                  <span style={{ fontSize: "9px", minWidth: "30px" }}>
-                    {prize.percent}%
-                  </span>
-                </div>
-              ))}
-            </div>
+            {payoutAnimationCount.get() % 2 === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "3px",
+                  marginBottom: "6px",
+                  animation: "payoutFade 3.5s ease-out forwards",
+                }}
+              >
+                {payoutDots.map((prize, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      fontSize: "10px",
+                    }}
+                  >
+                    <span style={{ fontSize: "14px", minWidth: "42px", textAlign: "right" }}>{prize.emoji}</span>
+                    <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{ prize.dots}</span>
+                    <span style={{ fontSize: "9px", minWidth: "30px" }}>
+                      {prize.percent}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "3px",
+                  marginBottom: "6px",
+                  animation: "payoutFade 3.5s ease-out forwards",
+                }}
+              >
+                {payoutDots.map((prize, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      fontSize: "10px",
+                    }}
+                  >
+                    <span style={{ fontSize: "14px", minWidth: "42px", textAlign: "right" }}>{prize.emoji}</span>
+                    <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{ prize.dots}</span>
+                    <span style={{ fontSize: "9px", minWidth: "30px" }}>
+                      {prize.percent}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Visual readout: TADA emojis based on generosity level */}
             <div style={{ fontSize: "12px", minHeight: "16px", lineHeight: "1" }}>
@@ -680,7 +710,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             {/* Controls */}
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <button
-                onClick={decrementGenerosity({ generosity })}
+                onClick={decrementGenerosity({ generosity, payoutAnimationCount })}
                 disabled={minusDisabled}
                 style={{
                   fontSize: "14px",
@@ -695,7 +725,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                 −
               </button>
               <button
-                onClick={incrementGenerosity({ generosity })}
+                onClick={incrementGenerosity({ generosity, payoutAnimationCount })}
                 disabled={plusDisabled}
                 style={{
                   fontSize: "14px",
@@ -719,6 +749,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
       generosity,
       spinSequence,
       spinCount,
+      payoutAnimationCount,
       spinHistory,
     };
   }
