@@ -186,19 +186,28 @@ export default recipe<SpinnerInput, SpinnerOutput>(
     // Check if spinCount is even or odd to alternate animations
     const isEvenSpin = computed(() => spinCount.get() % 2 === 0);
 
-    // Calculate payout percentages
-    const payoutPercentages = computed(() => {
+    // Calculate payout percentages and convert to emoji dots (poor man's progress bars)
+    const payoutDots = computed(() => {
       const gen = generosity.get();
-      const hugWeight = 1 + (gen * 10); // 1 to 101 (high gen = lots of hugs)
-      const candyWeight = 11 - gen; // 11 to 1 (high gen = few candy)
+      const hugWeight = 1 + (gen * 10);
+      const candyWeight = 11 - gen;
       const weightThreeBeans = candyWeight * 0.45;
       const weightOneBean = candyWeight * 0.55;
       const totalWeight = weightThreeBeans + weightOneBean + hugWeight;
 
+      const threeBeansPct = Math.round((weightThreeBeans / totalWeight) * 100);
+      const oneBeanPct = Math.round((weightOneBean / totalWeight) * 100);
+      const hugPct = Math.round((hugWeight / totalWeight) * 100);
+
+      // Convert percentages to number of dots (out of 10)
+      const threeBeansDots = Math.round(threeBeansPct / 10);
+      const oneBeanDots = Math.round(oneBeanPct / 10);
+      const hugDots = Math.round(hugPct / 10);
+
       return [
-        { emoji: "🍬🍬🍬", percent: (weightThreeBeans / totalWeight) * 100 },
-        { emoji: "🍬", percent: (weightOneBean / totalWeight) * 100 },
-        { emoji: "🤗", percent: (hugWeight / totalWeight) * 100 },
+        { emoji: "🍬🍬🍬", dots: "🟢".repeat(threeBeansDots), percent: threeBeansPct },
+        { emoji: "🍬", dots: "🟢".repeat(oneBeanDots), percent: oneBeanPct },
+        { emoji: "🤗", dots: "🔴".repeat(hugDots), percent: hugPct },
       ];
     });
 
@@ -670,7 +679,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                   ×
                 </button>
 
-                {payoutPercentages.map((prize, i) => (
+                {payoutDots.map((prize, i) => (
                   <div
                     key={i}
                     style={{
@@ -681,26 +690,9 @@ export default recipe<SpinnerInput, SpinnerOutput>(
                     }}
                   >
                     <span style={{ fontSize: "14px" }}>{prize.emoji}</span>
-                    <div
-                      style={{
-                        width: "100px",
-                        height: "12px",
-                        backgroundColor: "#e2e8f0",
-                        borderRadius: "2px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: `${prize.percent}%`,
-                          height: "100%",
-                          backgroundColor: i === 2 ? "#f87171" : "#4ade80",
-                          transition: "width 0.3s ease-out",
-                        }}
-                      />
-                    </div>
+                    <span style={{ fontSize: "12px", letterSpacing: "1px" }}>{prize.dots}</span>
                     <span style={{ fontSize: "9px", minWidth: "30px" }}>
-                      {Math.round(prize.percent)}%
+                      {prize.percent}%
                     </span>
                   </div>
                 ))}
