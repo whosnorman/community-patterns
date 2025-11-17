@@ -231,7 +231,7 @@ export default recipe<SpinnerInput, SpinnerOutput>(
             alignItems: "center",
             justifyContent: "center",
             minHeight: "100vh",
-            backgroundColor: "#f0f9ff",
+            backgroundColor: "white",
             fontFamily: "system-ui, sans-serif",
             padding: "20px",
             gap: "40px",
