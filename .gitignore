@@ -1,6 +1,10 @@
 # Workspace config (never commit!)
 .claude-workspace
 
+# Claude settings (never commit!)
+.claude/settings.local.json
+*.local.json
+
 # Identity keys and passphrases (never commit!)
 *.key
 claude.key
