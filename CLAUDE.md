@@ -705,7 +705,7 @@ git push origin main
 **Step 2: Create pull request**
 ```bash
 gh pr create \
-  --repo commontoolsinc/community-patterns \
+  --repo jkomoros/community-patterns \
   --title "Add: pattern name" \
   --body "$(cat <<'EOF'
 ## Summary

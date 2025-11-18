@@ -522,7 +522,7 @@ git push origin main
 
 # Create PR
 gh pr create \
-  --repo commontoolsinc/community-patterns \
+  --repo jkomoros/community-patterns \
   --title "Add: shopping list pattern" \
   --body "Shopping list pattern with categories and filtering"
 ```

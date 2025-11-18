@@ -90,7 +90,7 @@ gh auth status || gh auth login
 cd ~/Code
 
 # 1. Fork this repo on GitHub first
-# Go to: https://github.com/commontoolsinc/community-patterns
+# Go to: https://github.com/jkomoros/community-patterns
 # Click "Fork"
 
 # 2. Clone your fork
